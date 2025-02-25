@@ -1,0 +1,57 @@
+{
+  "name": "@leroyabundant/payva-js-sdk",
+  "version": "1.0.0",
+  "description": "A JavaScript SDK for integrating with Payva's buy now pay later service.",
+  "main": "dist/payva-sdk.js",
+  "module": "dist/payva-sdk.js",
+  "private": false,
+  "types": "dist/index.d.ts",
+  "exports": {
+    "import": "./dist/payva-sdk.js",
+    "require": "./dist/payva-sdk.js"
+  },
+  "files": [
+    "dist/**/*"
+  ],
+  "scripts": {
+    "build": "webpack --mode production",
+    "dev": "webpack --mode development --watch",
+    "test": "jest",
+    "lint": "eslint src --ext .ts",
+    "prepare": "npm run build",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": ["Payva", "SDK", "Payments", "BNPL"],
+  "author": "Your Name",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-username/payva-js-sdk.git"
+  },
+  "bugs": {
+    "url": "https://github.com/your-username/payva-js-sdk/issues"
+  },
+  "homepage": "https://github.com/your-username/payva-js-sdk#readme",
+  "dependencies": {
+    "@types/node": "^22.13.4",
+    "lit": "^3.2.1"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.5.14",
+    "@typescript-eslint/eslint-plugin": "^8.24.1",
+    "@typescript-eslint/parser": "^8.24.1",
+    "eslint": "^9.20.1",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.2.5",
+    "ts-loader": "^9.5.2",
+    "typescript": "^5.7.3",
+    "webpack": "^5.98.0",
+    "webpack-cli": "^6.0.1"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  }
+}
