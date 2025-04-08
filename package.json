@@ -14,13 +14,10 @@
     "dist/**/*"
   ],
   "scripts": {
-    "build": "webpack --mode production",
-    "dev": "webpack --mode development --watch",
-    "test": "jest",
-    "lint": "eslint src --ext .ts",
-    "prepare": "npm run build",
-    "prepublishOnly": "npm run build"
-  },
+  "build": "webpack --mode production",
+  "build:types": "tsc --project tsconfig.types.json",
+  "prepare": "npm run build && npm run build:types"
+},
   "keywords": [
     "Payva",
     "SDK",
