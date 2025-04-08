@@ -2,6 +2,7 @@ import "./modal"; // ✅ Ensure Webpack includes modal.ts\
 
 export interface CheckoutToken {
     id: string | number;
+    checkoutUrl: string;
     merchantId: string | number;
     platformOrderId: string;
     products: any[]; // adjust type as needed for your products
@@ -75,14 +76,14 @@ class Payva {
    * The checkout argument includes the checkoutUrl and an optional token
    * (in the form of a CheckoutToken object).
    */
-  async initiateCheckout(checkout: { checkoutUrl: string; token?: CheckoutToken }) {
+  async initiateCheckout(checkout: CheckoutToken) {
     if (checkout.checkoutUrl) {
       console.log("🔹 Attempting to open modal with URL:", checkout.checkoutUrl);
       await customElements.whenDefined("payva-modal");
       console.log("✅ payva-modal is defined, calling createModal()");
       const modal = document.querySelector("payva-modal") as any;
       if (modal && typeof modal.createModal === "function") {
-        modal.createModal(checkout.checkoutUrl, checkout.token);
+        modal.createModal(checkout);
       } else {
         console.error("❌ PayvaModal is not properly initialized.");
       }

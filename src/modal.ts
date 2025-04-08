@@ -118,13 +118,17 @@ export class PayvaModal extends LitElement {
     /**
    * Opens the modal by setting the checkout URL and optionally storing a token.
    * After rendering, if a token is provided, it is sent to the iframe via postMessage.
-   * @param url The checkout URL to load in the iframe.
-   * @param token Optional checkout token object to pass securely.
+   * @param checkout The checkout  to.
    */
-  createModal(url: string, token?: CheckoutToken) {
-    console.log("🔹 Opening Modal with URL:", url);
-    this.checkoutUrl = url;
-    this.checkoutToken = token || null;
+  createModal(checkout: CheckoutToken) {
+    const { checkoutUrl } = checkout;
+    if (!checkoutUrl) {
+        console.error("❌ Error: No checkout URL provided.");
+        return;
+    }
+
+    this.checkoutUrl = checkoutUrl;
+    this.checkoutToken = checkout || null;
     this.open = true;
     this.setAttribute("open", "");
 
@@ -134,12 +138,12 @@ export class PayvaModal extends LitElement {
       console.log("✅ Modal should now be visible.");
 
       // If a token is provided, send it to the iframe via postMessage.
-      if (token) {
+      if (checkout) {
         const iframe = this.shadowRoot?.querySelector("iframe");
         if (iframe && iframe.contentWindow) {
           // Determine the target origin based on the checkout URL.
-          const targetOrigin = new URL(url).origin;
-          iframe.contentWindow.postMessage({ checkoutToken: token }, targetOrigin);
+          const targetOrigin = new URL(checkoutUrl).origin;
+          iframe.contentWindow.postMessage({ checkoutToken: checkout }, targetOrigin);
           console.log(`✅ Sent checkout token to iframe with targetOrigin: ${targetOrigin}`);
         }
       }
