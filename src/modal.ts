@@ -1,4 +1,5 @@
 import { html, css, LitElement } from "lit";
+import { CheckoutToken } from ".";
 
 export class PayvaModal extends LitElement {
     static styles = css`
@@ -70,17 +71,21 @@ export class PayvaModal extends LitElement {
 
     static properties = {
         checkoutUrl: { type: String },
+        // Now we store the token as an object (serialized automatically by Lit)
+        checkoutToken: { type: Object },
         open: { type: Boolean, reflect: true },
-    };
+      };
 
-    checkoutUrl: string = "";
-    open: boolean = false;
-
-    constructor() {
+      checkoutUrl: string = "";
+      checkoutToken: CheckoutToken | null = null;
+      open: boolean = false;
+    
+      constructor() {
         super();
         this.checkoutUrl = "";
+        this.checkoutToken = null;
         this.open = false;
-    }
+      }
 
     connectedCallback() {
         super.connectedCallback();
@@ -110,21 +115,38 @@ export class PayvaModal extends LitElement {
         }
     };
 
-    createModal(url: string) {
-        console.log("🔹 Opening Modal with URL:", url);
+    /**
+   * Opens the modal by setting the checkout URL and optionally storing a token.
+   * After rendering, if a token is provided, it is sent to the iframe via postMessage.
+   * @param url The checkout URL to load in the iframe.
+   * @param token Optional checkout token object to pass securely.
+   */
+  createModal(url: string, token?: CheckoutToken) {
+    console.log("🔹 Opening Modal with URL:", url);
+    this.checkoutUrl = url;
+    this.checkoutToken = token || null;
+    this.open = true;
+    this.setAttribute("open", "");
 
-        this.checkoutUrl = url;
-        this.open = true;
-        this.setAttribute("open", "");
+    requestAnimationFrame(() => {
+      this.style.opacity = "1";
+      this.style.visibility = "visible";
+      console.log("✅ Modal should now be visible.");
 
-        requestAnimationFrame(() => {
-            this.style.opacity = "1";
-            this.style.visibility = "visible";
-            console.log("✅ Modal should now be visible.");
-        });
+      // If a token is provided, send it to the iframe via postMessage.
+      if (token) {
+        const iframe = this.shadowRoot?.querySelector("iframe");
+        if (iframe && iframe.contentWindow) {
+          // Determine the target origin based on the checkout URL.
+          const targetOrigin = new URL(url).origin;
+          iframe.contentWindow.postMessage({ checkoutToken: token }, targetOrigin);
+          console.log(`✅ Sent checkout token to iframe with targetOrigin: ${targetOrigin}`);
+        }
+      }
+    });
 
-        this.requestUpdate();
-    }
+    this.requestUpdate();
+  }
 
     closeModal() {
         console.log("🔹 Closing Modal");

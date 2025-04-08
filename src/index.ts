@@ -1,10 +1,20 @@
-import "./modal"; // ✅ Ensure Webpack includes modal.ts
+import "./modal"; // ✅ Ensure Webpack includes modal.ts\
+
+export interface CheckoutToken {
+    id: string | number;
+    merchantId: string | number;
+    platformOrderId: string;
+    products: any[]; // adjust type as needed for your products
+    amount: number;
+    salesTax: number;
+    redirectUrl: string;
+  }
 
 class Payva {
     private modal: HTMLElement | null;
     private callbacks: Record<string, Function> = {};
 
-    constructor(apiKey: string) {
+    constructor() {
         // ✅ Ensure the modal exists
         let existingModal = document.querySelector("payva-modal");
         if (!existingModal) {
@@ -60,24 +70,26 @@ class Payva {
         }
     };
 
-    async initiateCheckout(checkout: { checkoutUrl: string }) {
-        if (checkout.checkoutUrl) {
-            console.log("🔹 Attempting to open modal with URL:", checkout.checkoutUrl);
-            
-            // ✅ Wait for payva-modal to be fully registered before using it
-            await customElements.whenDefined("payva-modal");
-            console.log("✅ payva-modal is defined, calling createModal()");
-            
-            const modal = document.querySelector("payva-modal") as any;
-            if (modal && typeof modal.createModal === "function") {
-                modal.createModal(checkout.checkoutUrl);
-            } else {
-                console.error("❌ PayvaModal is not properly initialized.");
-            }
-        } else {
-            console.error("❌ Error: No checkout URL returned.");
-        }
+    /**
+   * Initiates the checkout flow by opening the modal.
+   * The checkout argument includes the checkoutUrl and an optional token
+   * (in the form of a CheckoutToken object).
+   */
+  async initiateCheckout(checkout: { checkoutUrl: string; token?: CheckoutToken }) {
+    if (checkout.checkoutUrl) {
+      console.log("🔹 Attempting to open modal with URL:", checkout.checkoutUrl);
+      await customElements.whenDefined("payva-modal");
+      console.log("✅ payva-modal is defined, calling createModal()");
+      const modal = document.querySelector("payva-modal") as any;
+      if (modal && typeof modal.createModal === "function") {
+        modal.createModal(checkout.checkoutUrl, checkout.token);
+      } else {
+        console.error("❌ PayvaModal is not properly initialized.");
+      }
+    } else {
+      console.error("❌ Error: No checkout URL returned.");
     }
+  }
 }
 
 export { Payva };
