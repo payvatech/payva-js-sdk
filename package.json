@@ -55,6 +55,6 @@
     "node": ">=18"
   },
   "publishConfig": {
-    "registry": "https://npm.pkg.github.com"
+    "registry": "https://payvatech-382098352109.d.codeartifact.us-east-1.amazonaws.com/npm/payva-js-sdk/"
   }
 }
