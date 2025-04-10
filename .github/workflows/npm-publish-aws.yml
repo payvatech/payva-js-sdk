@@ -9,16 +9,7 @@ on:
      types: [created]
      
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-
-  publish-gpr:
-    needs: build
+  publish:
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -29,7 +20,12 @@ jobs:
         with:
           node-version: 20
           registry-url: https://npm.pkg.github.com/
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: AKIAVR5WWE7WXQ2MGUMN
+          aws-secret-access-key: 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
+          aws-region: us-east-1    
       - run: npm ci
+      - run: npm run build
       - run: npm publish
-        env:
-          NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
