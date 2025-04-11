@@ -1,5 +1,5 @@
 {
-  "name": "@payva/payva-js-sdk",
+  "name": "@payvatech/payva-js-sdk",
   "version": "1.0.2",
   "description": "A JavaScript SDK for integrating with Payva's buy now pay later service.",
   "main": "dist/payva-sdk.js",
