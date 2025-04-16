@@ -4,7 +4,8 @@
     "rootDir": "./src",
     "strict": true,
     "declaration": true,
-    "emitDeclarationOnly": false,  // Ensure JS is emitted for ts-loader
+    "declarationMap": true,
+    "emitDeclarationOnly": false,
     "module": "ES6",
     "target": "ES6",
     "lib": ["DOM", "ES6"],

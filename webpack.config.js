@@ -8,25 +8,25 @@ module.exports = (env, argv) => ({
         library: {
             name: "Payva",
             type: "umd",
-            export: "default",
+            export: "default"
         },
-        globalObject: "typeof self !== 'undefined' ? self : this", // ✅ Fixes UMD issues
+        globalObject: "typeof self !== 'undefined' ? self : this" // ✅ Fixes UMD issues
     },
     resolve: {
-        extensions: [".ts", ".js"],
+        extensions: [".ts", ".js"]
     },
     module: {
         rules: [
             {
                 test: /\.ts$/,
                 use: "ts-loader",
-                exclude: /node_modules/,
-            },
-        ],
+                exclude: /node_modules/
+            }
+        ]
     },
     mode: argv.mode || "development",
     optimization: {
-        minimize: argv.mode === "production", // ✅ Minify only in production
+        minimize: argv.mode === "production" // ✅ Minify only in production
     },
-    devtool: argv.mode === "production" ? false : "source-map", // ✅ Debugging support in development
+    devtool: argv.mode === "production" ? false : "source-map" // ✅ Debugging support in development
 });
