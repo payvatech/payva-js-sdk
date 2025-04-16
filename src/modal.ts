@@ -101,10 +101,10 @@ export class PayvaModal extends LitElement {
 
   handleMessage = (event: MessageEvent) => {
     if (event.data?.action === "payva:checkout_complete") {
-      console.log("✅ Checkout completed, closing modal...");
+    //   console.log("✅ Checkout completed, closing modal...");
       this.closeModal();
     } else if (event.data?.action === "payva:close_modal") {
-      console.log("🔹 Closing modal on request...");
+    //   console.log("🔹 Closing modal on request...");
       this.closeModal();
     }
   };
@@ -136,7 +136,7 @@ export class PayvaModal extends LitElement {
     requestAnimationFrame(() => {
       this.style.opacity = "1";
       this.style.visibility = "visible";
-      console.log("✅ Modal should now be visible.");
+    //   console.log("✅ Modal should now be visible.");
 
       // If a token is provided, send it to the iframe via postMessage.
       if (checkout) {
@@ -144,7 +144,7 @@ export class PayvaModal extends LitElement {
         if (iframe && iframe.contentWindow) {
           const targetOrigin = new URL(checkoutUrl).origin;
           iframe.contentWindow.postMessage({ checkoutToken: checkout }, targetOrigin);
-          console.log(`✅ Sent checkout token to iframe with targetOrigin: ${targetOrigin}`);
+        //   console.log(`✅ Sent checkout token to iframe with targetOrigin: ${targetOrigin}`);
         }
       }
     });
@@ -156,7 +156,7 @@ export class PayvaModal extends LitElement {
    * Closes the modal by hiding it and removing the open attribute.
    */
   closeModal() {
-    console.log("🔹 Closing Modal");
+    // console.log("🔹 Closing Modal");
 
     this.style.opacity = "0";
     this.style.visibility = "hidden";
@@ -179,12 +179,11 @@ export class PayvaModal extends LitElement {
   }
 }
 
-console.log("✅ PayvaModal file is being executed.");
 
 // Register the custom element only once
 if (!customElements.get("payva-modal")) {
-  console.log("✅ Registering PayvaModal...");
+    // console.log("✅ Registering PayvaModal...");
   customElements.define("payva-modal", PayvaModal);
 } else {
-  console.log("✅ PayvaModal already registered.");
+    // console.log("✅ PayvaModal already registered.");
 }

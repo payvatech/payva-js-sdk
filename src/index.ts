@@ -35,19 +35,19 @@ class Payva {
     // Ensure the modal exists on the page
     const existingModal = document.querySelector("payva-modal");
     if (!existingModal) {
-      console.log("🔹 payva-modal NOT found. Creating one...");
+    //   console.log("🔹 payva-modal NOT found. Creating one...");
       this.modal = document.createElement("payva-modal") as HTMLElement;
       document.body.appendChild(this.modal);
     } else {
-      console.log("🔹 payva-modal FOUND in DOM.");
+    //   console.log("🔹 payva-modal FOUND in DOM.");
       this.modal = existingModal as HTMLElement;
     }
 
-    console.log("🔍 PayvaModal Reference:", this.modal);
+    // console.log("🔍 PayvaModal Reference:", this.modal);
 
     // Wait for the element to be fully defined before using it
     customElements.whenDefined("payva-modal").then(() => {
-      console.log("✅ payva-modal is fully defined.");
+    //   console.log("✅ payva-modal is fully defined.");
       this.modal = document.querySelector("payva-modal") as HTMLElement;
     });
 
@@ -66,19 +66,19 @@ class Payva {
 
   private handleCheckoutCompletion = (event: MessageEvent) => {
     if (event.data?.action === "payva:checkout_complete") {
-      console.log("✅ Checkout completed!", event.data);
+    //   console.log("✅ Checkout completed!", event.data);
       (this.modal as any)?.closeModal?.();
       if (this.callbacks["checkoutSuccess"]) {
         this.callbacks["checkoutSuccess"](event.data.data);
       }
     } else if (event.data?.action === "payva:checkout_failed") {
-      console.log("❌ Checkout failed!");
+    //   console.log("❌ Checkout failed!");
       (this.modal as any)?.closeModal?.();
       if (this.callbacks["checkoutFailure"]) {
         this.callbacks["checkoutFailure"](event.data.data);
       }
     } else if (event.data?.action === "payva:checkout_closed") {
-      console.log("🔹 Checkout modal closed.");
+    //   console.log("🔹 Checkout modal closed.");
       if (this.callbacks["checkoutClose"]) {
         this.callbacks["checkoutClose"]();
       }
@@ -98,12 +98,12 @@ class Payva {
         const urlObj = new URL(checkout.checkoutUrl);
         urlObj.searchParams.set("mode", checkout.mode);
         checkout.checkoutUrl = urlObj.toString();
-        console.log(`🔹 Appended mode=${checkout.mode} to checkout URL: ${checkout.checkoutUrl}`);
+        // console.log(`🔹 Appended mode=${checkout.mode} to checkout URL: ${checkout.checkoutUrl}`);
       }
 
-      console.log("🔹 Attempting to open modal with URL:", checkout.checkoutUrl);
+    //   console.log("🔹 Attempting to open modal with URL:", checkout.checkoutUrl);
       await customElements.whenDefined("payva-modal");
-      console.log("✅ payva-modal is defined, calling createModal()");
+    //   console.log("✅ payva-modal is defined, calling createModal()");
       const modal = document.querySelector("payva-modal") as any;
       if (modal && typeof modal.createModal === "function") {
         modal.createModal(checkout);
