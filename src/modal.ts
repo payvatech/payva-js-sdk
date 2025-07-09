@@ -172,7 +172,10 @@ export class PayvaModal extends LitElement {
     return html`
       <div>
         <div class="modal-content">
-          <iframe src="${this.checkoutUrl}"></iframe>
+          <iframe
+            src="${this.checkoutUrl}"
+            allow="storage-access-by-user-activation"
+          ></iframe>
         </div>
       </div>
     `;
