@@ -67,7 +67,6 @@ class Payva {
   private handleCheckoutCompletion = (event: MessageEvent) => {
     if (event.data?.action === "payva:checkout_complete") {
     //   console.log("✅ Checkout completed!", event.data);
-      (this.modal as any)?.closeModal?.();
       if (this.callbacks["checkoutSuccess"]) {
         this.callbacks["checkoutSuccess"](event.data.data);
       }
@@ -79,6 +78,7 @@ class Payva {
       }
     } else if (event.data?.action === "payva:checkout_closed") {
     //   console.log("🔹 Checkout modal closed.");
+      (this.modal as any)?.closeModal?.();
       if (this.callbacks["checkoutClose"]) {
         this.callbacks["checkoutClose"]();
       }
