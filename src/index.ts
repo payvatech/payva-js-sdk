@@ -20,10 +20,11 @@ export interface CheckoutToken {
  */
 class Payva {
   private modal: HTMLElement | null;
-  private callbacks: Record<"checkoutSuccess" | "checkoutFailure" | "checkoutClose", Function> = {
+  private callbacks: Record<"checkoutSuccess" | "checkoutFailure" | "checkoutClose" | "checkoutSuccessClose", Function> = {
     checkoutSuccess: () => {},
     checkoutFailure: () => {},
     checkoutClose: () => {},
+    checkoutSuccessClose: () => {},
   };
 
   constructor() {
@@ -60,7 +61,7 @@ class Payva {
    * @param event - The event name ("checkoutSuccess", "checkoutFailure", "checkoutClose").
    * @param callback - The function to be called when the event occurs.
    */
-  on(event: "checkoutSuccess" | "checkoutFailure" | "checkoutClose", callback: Function) {
+  on(event: "checkoutSuccess" | "checkoutFailure" | "checkoutClose" | "checkoutSuccessClose", callback: Function) {
     this.callbacks[event] = callback;
   }
 
@@ -81,6 +82,12 @@ class Payva {
       (this.modal as any)?.closeModal?.();
       if (this.callbacks["checkoutClose"]) {
         this.callbacks["checkoutClose"]();
+      }
+    } else if (event.data?.action === "payva:checkout_success_close") {
+    //   console.log("🔹 Checkout successful and modal closed.");
+      (this.modal as any)?.closeModal?.();
+      if (this.callbacks["checkoutSuccessClose"]) {
+        this.callbacks["checkoutSuccessClose"]();
       }
     }
   };
