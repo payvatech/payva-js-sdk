@@ -38,7 +38,7 @@
   },
   "homepage": "https://github.com/payvatech/payva-js-sdk#readme",
   "dependencies": {
-    "@types/node": "^22.13.4",
+    "@types/node": "^22.17.0",
     "lit": "^3.2.1"
   },
   "devDependencies": {
